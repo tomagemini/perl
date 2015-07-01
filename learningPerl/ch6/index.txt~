@@ -1,0 +1,33 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 6: Hashes
+I) Syntax: my %myHash = (key1, value1, key2, value2);
+   or:	   my %myHash = (
+   		   	  		  key1 => value1,
+				   	  key2 => value2,
+				   	  );
+II) Hash Functions:
+	1)reverse - reverse a hash.
+	   my %hash = reverse %anotherHash;
+	2) keys - returns all the keys of a hash.
+	   my @keys = keys %hash;
+	3) values - returns all the values of a hash.
+	   my @values = values %hash;
+	4) each - returns key value pairs of a hash.
+	   while(my($key $value) = each %hash)
+	   {
+	       say "$key => $value";
+	   }
+	5) sort - sort on either keys or values of a hash.
+	   sort keys %hash
+	6) exists - check if a key exists in a hash.
+	   if(exists $hash{$key})
+III) The %ENV hash
+	 Perl program runs in certain environment, and your program can look at
+	 the environment to get information about its surroundings. Perl stores
+	 this information in the %ENV hash.

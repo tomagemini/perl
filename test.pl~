@@ -1,0 +1,9 @@
+#!/usr/bin/perl -w
+# File Name: test.pl
+# Author: Yi Zhu
+# Date: 2015/05/25
+# Object: Test some perl commands
+use strict;
+use 5.014;
+
+say "Hello! World";

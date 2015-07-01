@@ -1,0 +1,85 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 6: Hashes
+A) What Is a Hash?
+	A hash is a data structure that stores key-value pairs. Hash keys are
+	arbitary, unique strings. Hash values can be same and use more than once.
+	a) Why Use a Hash?
+	   The general idea is to relate one set of data to another set of data.
+B) Hash Element Access
+   	Syntax: $hash{$key} = $value
+	a) The Hash As a Whole
+	   Syntax: %hash = (key1, value1, key2, value2, ...)
+	b) Hash Assignment
+	    1) copy a hash
+		   	my %newHash = %oldHash;
+		2) reverse a hash
+		   	my %newHash = reverse %oldHash;
+			It reverses the key-value sets. So, newKey is oldValue, and
+			newValue is Oldkey. If the newKey has multiple oldValues, the
+			later value will overwrite the previous ones.
+	c) The Big Arrow
+	   Syntax: my %hash = (
+	   		   	  key1 => value1,
+				  key2 => value2,
+				  ...
+				  );
+C) Hash Functions
+    a) The keys and values Functions
+	   Syntax: my @key = keys %hash;
+	   		   my @value = values %hash;
+			   my $count = keys %hash; # returns how many keys
+	b) The each Function
+	   while(my($key $value) = each %hash)
+	   {
+	       say "$key => $value";
+	   }
+D) Typical Use of a Hash
+   Check out books in an libaray.
+    a) The exists Function
+	   if(exists $book{$key}) # true if $book{$key} is defined
+	b) The delete Function
+	   Syntax: delete $book{$key};
+	   It deletes a hash key value pairs. It is NOT same as storing
+	   'undef' as a value in a key. After delete, exists($book{$key}) will
+	   return false
+	c) Hash Element Interpolation
+	   You can interpolate a single hash element into a double-quoted string,
+	   but not the whole hash. In other words, "%book" is just a five(5)
+	   characters string.
+E) The %ENV hash
+   Perl program runs in certain environment, and your program can look at the
+   environment to get information about its surroundings. Perl stores this
+   information in the %ENV hash.
+
+Summary:
+I) Syntax: $hash{$key} = $value
+   or:	   %myHash = (key1, value1, key2, value2);
+   or:	   %myHash = (
+   		   		   key1 => value1,
+				   key2 => value2,
+				   );
+II) Hash Functions:
+	1) reverse - reverse a hash.
+	2) keys - returns all the keys of a hash.
+	3) values - returns all the values of a hash.
+	4) each - returns key value pairs of a hash.
+	5) sort - sort on either keys or values of a hash.
+	6) exists - check if a key exists in a hash.
+	7) delete - delete a key-value pair from a hash
+III) The %ENV hash
+	 A hash stores it's running environment.
+
+Exercises:
+1) Prompt user for the given name and display the family name.
+   File Name: lname.pl
+2) Reads a series of words with one word per line until end-of-input. Then
+   prints a summary of how man times each word was seen.
+   File Name: wordcount.pl
+3) List all of the keys and values in %ENV.
+   File Name: showENV.pl

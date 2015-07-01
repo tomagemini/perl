@@ -1,0 +1,36 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 6: Hashes
+What Is a Hash?
+	Why Use a Hash?
+Hash Element Access
+	The Hash As a Whole
+	Hash Assignment
+	The Big Arrow
+Hash Functions
+	The keys and values Functions
+	The each Function
+Typical Use of a Hash
+	The exists Function
+	The delete Function
+	Hash Element Interpolation
+The %ENV hash
+Exercises(3)
+
+Chapter 7: In the World of Regular Expressions
+What Are Regular Expressions?
+Using Simple Patterns
+	Unicode Propterties
+	About Metacharacters
+	Simple Quantifiers
+	Grouping in Patterns
+	Alternatives
+Character Classes
+	Character Class Shortcuts
+	Negating the Shortcuts
+Exercises(6)

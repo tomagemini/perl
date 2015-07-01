@@ -1,0 +1,73 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 8: Matching with Regular Expressions
+A) Matches with m//
+B) Match Modifiers
+   See ch8eg1.pl for examples regarding the following subtitles
+	a) Case-Insensitive Matching with /i
+	b) Matching Any Character with /s
+	   It changes every dot in the pattern to act like [\d\D], which is to
+	   match any character including the newline character
+	c) Adding Whitespace with /x
+	d) Combining Option Modifiers
+	e) Choosing a Character Interpretation
+	   If you have the ordinal 0xBC, is that Latin-9 or Latin-1 or something
+	   else in some other locale. You can't know how to manipulate it until
+	   you know what it represent in the locale.
+	   e.g.
+		$_ = <STDIN>;
+	   	my $OE = chr(0xBC); # get exactly wha we intend
+	   	if(/$OE/li) # that's better
+	   	{
+			print "Found $OE\n";
+	   	}
+	   In this case, you might get different results depending on how Perl
+	   treats the string in $_ and the string in match operator
+	f) Other Options
+C) Anchors
+   \A means beginning of the string
+   \Z means end of the string
+   \z means absolute end of the string, which means nothing can come after \z
+   even the newline character
+   ^ means beginning of the line (in Perl 5)
+   $ means end of the line (in Perl 5)
+   In Perl 4 and before ^ \A and $ \Z functions about the same without /m. In
+   Perl 5, ^ and $ can make difference with the multiline matching option /m. 
+   e.g. /fred$/m
+   In Perl 5, it matches any line end with fred including multiline
+   In Perl 4, it matches fred anywhere as long as it's either followed by a
+   newline anywhere in the string, or is at the absolute end of the string.
+	a) Word Anchors
+	   \b means word boundary.
+	   e.g. /\bhunt/ will match hunt or hunting, but not shunt
+	   		/stong\b/ will match sandstone or flintstone, but not capstones
+D) The Binding Operator =~
+   see ch8eg2.pl for examples
+   The binding operator has fairly high precedence. So,
+   	   my $likes_perl = <STDIN> =~ /\byes\b/i
+   will do the pattern test first, but not assign the STDIN to variable first.
+E) Interpolating into Patterns
+   see ch8eg2.pl for examples
+   The pattern operator acts just as if it were a double-quoted string.
+F) The Match Variables
+   Like groups pattern using back reference, match variables use $1 $2 etc.
+   see ch8eg3.pl for examples.
+	a) The Presistence of Captures
+	   
+	b) Noncapturing Parentheses
+	c) Named Captures
+	d) The Automatic Match Variables
+G) General Quantifiers
+H) Precedence
+	a) Examples of Precedence
+	b) And There's More
+I) A Pattern Test Program
+
+Summary:
+
+Exercises:

@@ -1,0 +1,16 @@
+#!/usr/bin/perl -w
+# File Name: rms.pl
+# Author: Yi Zhu
+# Date: 2015/06/18
+# Object: This program removes any spaces in files in current directory.
+# Version: 1.000
+use strict;
+use 5.016;
+
+foreach (glob('*'))
+{
+	my @tokens = split;
+	my $newName = join '', @tokens;
+	rename $_ => $newName;
+}
+

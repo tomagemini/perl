@@ -1,0 +1,25 @@
+#!/usr/bin/perl -w
+# File Name: lname.pl
+# Author: Yi Zhu
+# Date: 2015/06/18
+# Object: ch6ex1 - Prompt user for a given name and display the family name
+# corresponding to the given name.
+# Version: 2.0 - add sanity check and loop for the input
+use strict;
+use 5.014;
+
+my %names = (
+    fred => 'flintstone',
+    barney => 'rubble',
+    wilma => 'flintstone',
+    );
+
+while(1)
+{
+	say "Please enter the given name(empty line for exit):";
+	chomp(my $gname = <STDIN>);
+	last if $gname =~ /^\s*$/;
+	exists $names{$gname} ? 
+		say "The family name for $gname is: $names{$gname}" :
+		say "The given name $gname was not found!";
+}

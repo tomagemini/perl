@@ -1,0 +1,23 @@
+#!/usr/bin/perl -w
+# File Name: ch9ex1.pl
+# Author: Yi Zhu
+# Date: 2015/06/02
+# Object: Make a pattern what will match three consecutive copies of
+# whatever in $what
+use strict;
+use 5.014;
+
+say "Please enter the pattern string:";
+chomp(my $what = <>);
+say $what;
+say "Please enter the sample string to match:";
+chomp($_ = <>);
+say $_;
+if(/($what){3}/)
+{
+    say "Pattern found in the sample string!";
+}
+else
+{
+    say "No match!";
+}

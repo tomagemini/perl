@@ -1,0 +1,62 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 7: In the World of Regular Expressions
+A) What Are Regular Expressions?
+   A regular expression, often called a pattern in Perl, is a template that
+   either matches or doesn't match a given string.
+B) Using Simple Patterns
+	a) Unicode Propterties
+	   see ch7eg1.pl
+	b) About Metacharacters
+	   Using backslash(\) to escape metacharacters.
+	c) Simple Quantifiers
+	   '.' means any character, '*' means 0 or more, '+' means 1 or more.
+	d) Grouping in Patterns
+	    1) You can use back references to refer to the text that you matched in
+	   	   the parentheses, called a capture group. You denote a back reference
+		   as a back slash followed by a number like \1, \2, and so on. This is
+		   also know as registers in some language.
+		2) With the \g{N} notation, you can also use negative numbers, which
+		   is also called a relative back reference.
+		3) In order to indentify which group gets which number, just count the
+		   order of opening parentheses and ignore the nesting.
+		4) see ch7eg2.pl
+	e) Alternatives
+	   '|' is the alternatives in regex.
+C) Character Classes
+   A character class, a list of possible characters inside square
+   brackets([]), matches any single character from within the class. It
+   matches just one single character, which can be any one in the bracket.
+   e.g. [a-zA-Z] means all alphabet characters
+	a) Character Class Shortcuts
+	   Those shortcuts starts with a backslash(\).
+	   e.g. \d stands for all digits, \w stands for alphanumeric, etc.
+	b) Negating the Shortcuts
+	   Capitalize means negation.
+	   e.g. \D means all but not digits, and so on.
+	   '^' within the square brackets also means negation.
+	   e.g. [^\d] means same as [\D]
+
+Summary:
+Nothing Special in this chapter. All of them just basic regex knowledges.
+
+Exercises:
+1) Prints each line of inputs that mentions fred. Make a small text file to
+   test it.
+   File Name: showfred.pl
+2) Modify the previous program to all Fred matchs as well.
+   File Name: showfredi.pl
+3) Prints each line of inputs that contains '.' and ignores other lines.
+   File Name: showdot.pl
+4) Prints each line of inputs that is capitalized but not ALL capitalized.
+   File Name: showCap.pl
+5) Prints each line that has two of the same nonwhitespace characters next to
+   each other. e.g. Mississipi, Bamm-bamm, or llama.
+   File Name: showdouble.pl
+6) Prints any input line that metions both wilma and fred.
+   File Name: showextra.pl
