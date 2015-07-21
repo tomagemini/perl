@@ -58,10 +58,37 @@ F) The Match Variables
    Like groups pattern using back reference, match variables use $1 $2 etc.
    see ch8eg3.pl for examples.
 	a) The Presistence of Captures
-	   
+	   The capture variables generally stay around unti the next successful
+	   pattern match. That is, an unsuccessful match leaves the previous
+	   capture value intact, but a successful one resets them all.
+	   e.g. my $wilma = '123';
+	   		$wilma =~ /([0-9]+)/;		#Succeeds, $1 is 123
+			$wilma =~ /([a-zA-Z]+)/;	#BAD! Untested match result
+	   		print "Wilma's word was $1... or was it?\n";	 #Still 123!
 	b) Noncapturing Parentheses
+	   Perl's regular expressions have a way to use parentheses to group
+	   things but not trigger the capture groups, called noncapture
+	   parentheses, and you write then with a special sequence, which is ?:.
+	   e.g. if(/?:bronto)?sauces (steak|burger)/)
+	   		{
+				print "Fred wants a $1\n";
+			}
 	c) Named Captures
+	   Perl 5.10 lets you name the captures directly in the regular
+	   expression. It saves the text it matches in the hash name %+: the key
+	   is the label you used and the value is the part of the string that it
+	   matched. To label a match variable, you use (?<LABEL>PATTERN) where you
+	   replace LABEL with your own names.
+	   e.g. use 5.010;
+	   		my $names = 'Fred or Barney';
+			if($names =~ m/(?<name1>\w+) (?:and|or) (?<name2>\w+/)
+			{
+				say "I saw $+{name1} and $+{name2}";
+			}		
 	d) The Automatic Match Variables
+	   There are three more match variables that you get for free, whether the
+	   pattern has capture parentheses or not:
+	   1) $&: 
 G) General Quantifiers
 H) Precedence
 	a) Examples of Precedence

@@ -11,7 +11,7 @@ while(<>)
 	chomp;
 	if(/(\b\w*a\b)/)
 	{
-		print "Matched: |$`\'$1\'$'|\n"; # the special match vars
+		print "Matched: |$`<$1>$'|\n"; # the special match vars
 	}
 	else
 	{
