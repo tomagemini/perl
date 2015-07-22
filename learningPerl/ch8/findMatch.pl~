@@ -4,8 +4,6 @@
 # Date: 2015/07/21
 # Object: ch8ex1 - write a pattern to match the word 'match'
 # Version: 1.10 - add a $USAGE
-#               - add an else part for error display
-#               - file name changes from ch8ex1.pl to findMatch.pl
 use strict;
 use 5.014;
 

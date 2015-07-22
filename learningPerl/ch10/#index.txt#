@@ -1,0 +1,59 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 10: More Control Structures
+A) The unless Control Structure
+   Using unless says to run the block of code unless the condition is
+   true. It's just like using an if test with the opposite condition.
+   a) The else Clause with unless
+B) The until Control Structure
+   until is just the reverse of while loop
+C) Expression Modifiers
+   In order to have a more compact notation, an expression may be followed by
+   a modifier that controls it.
+   e.g. print "$n is a negative number.\n" if $n < 0;
+   Perl only allows a single expression on either side of the modifier. You
+   can't put multiple statements on the left of the modifier. With the foreach
+   modifier, there's no way to choose a different control variable - it's
+   always $_.
+D) The Naked Block Control Structure
+   The so-called "naked" block is one without a keyword or condition. One
+   feature of naked block is to provide a scope for temporary lexical
+   variables. 
+   e.g. {
+			print "Please enter a number: ";
+			chomp(my $n = <STDIN>);
+			my $root = sqrt $n; #calculate the square root
+			print "The square root of $n is $root.\n";
+		}
+		In this block, $n and $root are temporary variable scoped to the block.
+E) The elsif Clause
+F) Autoincrement and Autodecrement
+   a) The Value of Autoincrement
+   	  preincrement: increment before assign the value.
+	  e.g. my $m = 5;
+	  	   my $n = ++$m; # increment $m to 6 first, then assign value to $n
+		   	  	   		 # so $m and $n are both 6 now
+	  postincrement: increment after assign the value
+	  e.g. my $d = $m++; # assign $m to $d first, then increment $m
+	  	   	  	   		 # so, $d is still 6 and $m is now 7
+G) The for Control Structure
+   a) The Secret Connection Between foreach and for
+H) Loop Controls
+   a) The last Operator
+   b) The next Operator
+   c) The redo Operator
+   d) Labeled Blocks
+I) Logical Operators
+   a) The Value of a Short Circuit Operator
+   b) The defined-or Operator
+   c) Control Structures Using Partial-Evaluation Operators
+
+Summary:
+Nothing special to summary. Everything details is given.
+
+Exercises:

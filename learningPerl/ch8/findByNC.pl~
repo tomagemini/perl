@@ -1,13 +1,12 @@
 #!/usr/bin/perl -w
-# File Name: findLastSpace.pl
+# File Name: findByNC.pl
 # Author: Yi Zhu
 # Date: 2015/07/21
-# Object: ch8ex6 - write a pattern to match the line end with a whitesapce and
-# add a marker character at the end of output line
+# Object: ch8ex4 - write a pattern to match the word end with 'a' by using
+#         named capture.
 # Version: 1.10 - add a $USAGE
 use strict;
 use 5.014;
-
 my $USAGE = "Usage: $0 inputs.";
 
 if(@ARGV > 0)
@@ -15,9 +14,9 @@ if(@ARGV > 0)
 	while(<>)
 	{ # take one input line at a time
 		chomp;
-		if(/\s$/s)
+		if(/(?<word>\b\w*a\b)/)
 		{
-			print "$_%\n";
+			print "Matched: |$`<$+{word}>$'|\n"; # the special match vars
 		}
 		else
 		{
@@ -26,6 +25,6 @@ if(@ARGV > 0)
 	}
 }
 else
-{
+
     say "Error! There is no input. $USAGE";
 }

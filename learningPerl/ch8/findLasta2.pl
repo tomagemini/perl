@@ -5,6 +5,8 @@
 # Object: ch8ex3 - write a pattern to match the word end with 'a' and display
 # with single quotation mark.
 # Version: 1.10 - add a $USAGE
+#               - add an else part for error display
+#               - file name changes from ch8ex3.pl to findLasta2.pl
 use strict;
 use 5.014;
 

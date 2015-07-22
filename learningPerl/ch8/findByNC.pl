@@ -5,6 +5,8 @@
 # Object: ch8ex4 - write a pattern to match the word end with 'a' by using
 #         named capture.
 # Version: 1.10 - add a $USAGE
+#               - add an else part for error display
+#               - file name changes from ch8ex4.pl to findByNC.pl
 use strict;
 use 5.014;
 my $USAGE = "Usage: $0 inputs.";

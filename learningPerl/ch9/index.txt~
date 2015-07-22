@@ -5,160 +5,106 @@ Publisher: O'Reilly
 Year: 2011
 ISBN: 9781449303587
 
-Chapter 8: Matching with Regular Expressions
-A) Matches with m//
-B) Match Modifiers
-   See ch8eg1.pl for examples regarding the following subtitles
-	a) Case-Insensitive Matching with /i
-	b) Matching Any Character with /s
-	   It changes every dot in the pattern to act like [\d\D], which is to
-	   match any character including the newline character
-	c) Adding Whitespace with /x
-	d) Combining Option Modifiers
-	e) Choosing a Character Interpretation
-	   If you have the ordinal 0xBC, is that Latin-9 or Latin-1 or something
-	   else in some other locale. You can't know how to manipulate it until
-	   you know what it represent in the locale.
-	   e.g.
-		$_ = <STDIN>;
-	   	my $OE = chr(0xBC); # get exactly wha we intend
-	   	if(/$OE/li) # that's better
-	   	{
-			print "Found $OE\n";
-	   	}
-	   In this case, you might get different results depending on how Perl
-	   treats the string in $_ and the string in match operator
-	f) Other Options
-C) Anchors
-   \A means beginning of the string
-   \Z means end of the string
-   \z means absolute end of the string, which means nothing can come after \z
-   even the newline character
-   ^ means beginning of the line (in Perl 5)
-   $ means end of the line (in Perl 5)
-   In Perl 4 and before ^ \A and $ \Z functions about the same without /m. In
-   Perl 5, ^ and $ can make difference with the multiline matching option /m. 
-   e.g. /fred$/m
-   In Perl 5, it matches any line end with fred including multiline
-   In Perl 4, it matches fred anywhere as long as it's either followed by a
-   newline anywhere in the string, or is at the absolute end of the string.
-	a) Word Anchors
-	   \b means word boundary.
-	   e.g. /\bhunt/ will match hunt or hunting, but not shunt
-	   		/stong\b/ will match sandstone or flintstone, but not capstones
-D) The Binding Operator =~
-   see ch8eg2.pl for examples
-   The binding operator has fairly high precedence. So,
-   	   my $likes_perl = <STDIN> =~ /\byes\b/i
-   will do the pattern test first, but not assign the STDIN to variable first.
-E) Interpolating into Patterns
-   see ch8eg2.pl for examples
-   The pattern operator acts just as if it were a double-quoted string.
-F) The Match Variables
-   Like groups pattern using back reference, match variables use $1 $2 etc.
-   see ch8eg3.pl for examples.
-	a) The Presistence of Captures
-	   The capture variables generally stay around unti the next successful
-	   pattern match. That is, an unsuccessful match leaves the previous
-	   capture value intact, but a successful one resets them all.
-	   e.g. my $wilma = '123';
-	   		$wilma =~ /([0-9]+)/;		#Succeeds, $1 is 123
-			$wilma =~ /([a-zA-Z]+)/;	#BAD! Untested match result
-	   		print "Wilma's word was $1... or was it?\n";	 #Still 123!
-	b) Noncapturing Parentheses
-	   Perl's regular expressions have a way to use parentheses to group
-	   things but not trigger the capture groups, called noncapture
-	   parentheses, and you write then with a special sequence, which is ?:.
-	   e.g. if(/?:bronto)?sauces (steak|burger)/)
-	   		{
-				print "Fred wants a $1\n";
-			}
-	c) Named Captures
-	   Perl 5.10 lets you name the captures directly in the regular
-	   expression. It saves the text it matches in the hash name %+: the key
-	   is the label you used and the value is the part of the string that it
-	   matched. To label a match variable, you use (?<LABEL>PATTERN) where you
-	   replace LABEL with your own names.
-	   e.g. use 5.010;
-	   		my $names = 'Fred or Barney';
-			if($names =~ m/(?<name1>\w+) (?:and|or) (?<name2>\w+/)
+Chapter 9: Processing Text with Regular Expressions
+A) Substitutions with s///
+    a) Global Replacements with /g
+	b) Different Delimiters
+	   If you use paired characters, which have a left and right variety, you
+	   have to use two pairs: one to hold the pattern and one to hold the
+	   replacement string. In this case, the delimiters don't have to be the
+	   same kind around the string as they around the pattern. In fact, the
+	   delimiters of the string could even be nonpaired.
+	   e.g. s{pattern}{string};
+	   		s[pattern](string);
+			s<pattern>#string#;
+	c) Substitution Modifiers
+	   1) /g - global replacement
+	   2) /i - case insensitive
+	   3) /x - allow extra whitespace
+	   4) /s - match any character including newline [\d\D]
+	d) The Binding Operator
+	e) Nondestructive Substitutions
+	   1) write as a single statement to assign a copy first then bind
+	   e.g. (my $copy = $original) =~ s/pattern/string/;
+	   2) Perl 5.14 adds a /r modifier for this purpose
+	   e.g. my $copy = $original =~ s/pattern/string/r;
+	f) Case Shifting
+	   1) \U - changes to all uppercase
+	   2) \L - changes to all lowercase
+	   3) \u - changes the first character to uppercase
+	   4) \l - changes the first character to lowercase
+	   5) \E - turn off the case shifting
+	   e.g. print "Hello, \L\u$name\E, would you like to paly a game?\n?";
+B) The split Operator
+   syntax: my @fields = split /separator/, $string;
+   The default for split is to break up $_ on whitespace.
+   e.g. my @fields = split; # like split /\s+/, $_;
+   The noncapturing parentheses(?:) also works for the pattern in split.
+C) The join Function
+   syntax: my $result = join $glue, @pieces;
+   Although split and join work well together, don't forget the first argument
+   to join is always a string, not a pattern.
+D) m// in List Context
+   When a pattern match(m//) is used in a list context, the return value is a
+   list of the capture variables created in the match, or an empty string if
+   the match failed. This is like using split "inside out": instead of
+   specifying what w want to remove, we specify what we want to keep.
+   e.g. my $data = "Barney Rubble Fred Flintstone Wilma Flintstone";
+   		my %last_name = ($data =~ /(\w+)\s+(\w+)/g);
+		# It returns a pair of captures as a key-value pairs in a hash.
+E) More Powerful Regular Expressions
+    a) Nongreedy Quantifiers
+	   For each of the greedy quantifiers, there's also a nongreedy quantifier
+	   available, which is add a '?' after the greedy quantifier.
+	   e.g. ?? - matches either one or none, but it prefers to match none.
+	b) Matching Multiple-Line Text
+	   Perl's patterns can match multiple lines of text as easily as single
+	   line. So, we can read an entire file into one variable by using join.
+	c) Updating Many Files
+	   $^I - special variable for backup file.
+	   <> - it will automatically open and close a series of files for you, or
+	   read from the standard-input stream if there aren't any filenames given.
+	d) In-Place Editing from the Command Line
+	   syntax: perl -p -i.bak -w -e 'command' filenames
+	   -p: tells Perl to write a program for you, which looks like:
+	   	   while(<>)
+		   {
+		       print;
+		   }
+	   -i: same as $^I. If you don't want a backup file, you can use -i alone,
+	       with no extension.
+	   -w: turns on warnings.
+	   -e: executable code follows
+	   -n: automatic print statement
+	   e.g. perl -p -i.bak -w -e 's/Randall/Randal/g' fred*.dat
+	   		is the same as:
+			#!/usr/bin/perl -w
+			$^I = ".bak";
+			while(<>)
 			{
-				say "I saw $+{name1} and $+{name2}";
-			}		
-	d) The Automatic Match Variables
-	   There are three more match variables that you get for free, whether the
-	   pattern has capture parentheses or not:
-	   1) $&: contains the entire matched string.
-	   2) $`: contains whatever before the matched string.
-	   3) $': contains whatever after the matched string.
-	   4) Instead of $`, $& or $', you can use ${^PREMATCH}, ${^MATCH}, or
-	   ${^POSTMATCH} with /p option after Per 5.10
-	   e.g. if("Hello there, neighbour" =~ /\s(\w+),/)
-	   		{
-				print "That was ($`)($&)($').\n";
+				s/Randall/Randal/g;
+				print;
 			}
-	   e.g. use 5.010;
-	   		if("Hello there, neighbour" =~ /\s(\w+),/p)
-			{
-				print "That actually matched '${^MATCH}'.\n";
-			}
-	   		if("Hello there, neighbour" =~ /\s(\w+),/p)
-			{
-				print "That was (${^PREMATCH})(${^MATCH})(${^POSTMATCH}).\n";
-			}
-G) General Quantifiers
-   A quantifier in a pattern means to repeat the preceding item a certain
-   number of times. Just use a comma-seperated pair of numbers inside curly
-   bracs ({}) to specify exactly how few and how many repetitions you want.
-   e.g. /a{5,15}/
-H) Precedence
-   Table 8-1. Regular expression precedence
-   Regular expression feature			Example
-   Parentheses(grouping or capturing)	(...),(?:...),(?<LABEL>...)
-   Quantifiers			   				a*,a+,a?,a(n,m)
-   Anchors and sequence					abc,^,$,\A,\b,\z,\Z
-   Alternation 							a|b|c
-   Atoms								a,[abc],\d,\1,\g{2}
-	a) Examples of Precedence
-	   When you're trying to understand a complex pattern, it may be helpful
-	   to add parentheses to clarify the precedence. But remember that
-	   grouping parentheses are also automatically capturing parentheses; use
-	   the noncapturing parentheses if you just want to group things.
-	b) And There's More
-	   A few more peatures are covered in Intermediate Perl, but also check
-	   prelre, prelrequick, and perlretut documentation for more information
-	   about what patterns in Perl can do.
-I) A Pattern Test Program
-   #!/usr/bin/perl
-   while(<>)	#take one input line at a time
-   {
-       chomp;
-	   if(/YOUR_PATTERN_GOES_HERE/)
-	   {
-	       print "Matched: |$`<$&>$'|\n";		#the special match vars
-	   }
-	   else
-	   {
-	       print "No match: |$_|\n";
-	   }
-   }
 
 Summary:
-Nothing more to summary. Maybe later.
+Nothing special to summary. Everything details is given.
 
 Exercises:
-1) Using the pattern test program, make a pattern to match the string match.
-   File Name: findMatch.pl
-2) Using the same program to find any word end with the character a.
-   File Name: findLasta.pl
-3) Modify exercise 2, capture the matched word to $1 and display it.
-   File Name: findLasta2.pl
-4) Modify exercise 3 by using named capture.
-   File Name: findByNC.pl
-5) Modify exercise 4 so that it will also capture up to 5 characters after the
-   matched capture.
-   File Name: findLasta5.pl
-6) Write a program to print out any line ending with whitespace and put a
-   marker character at the end of that line.
-   File Name: findLastSpace.pl
-
+1) Make a pattern that will match three consecutive copies of whatever is
+   currently contained in $what. That is, if $what is fred|barney, the pattern
+   should match fredfredbarney or barneyfredfred or barneyfredbarney, etc.
+   File Name: findCopy3x.pl
+2) Write a program that makes a modified copy of a text file. In the copy,
+   every string Fred(case-insensitive) should be replaced with Larry. The
+   input filename should be given on the command line, and the output filename
+   should be the corresponding file name ending with .out.
+   File Name: fredToLarry.pl
+3) Modify exercise 2 to change every Fred to Wilma and every Wilma to Fred.
+   File Name: switchFredWilma.pl
+4) Write a program to add a copyright line to all of your exercise answer so
+   far, by placing a line like:
+   ## Copyright (C) 20xx by Yours Truly
+   in the file immediately after the "shebang" line. You should edit the files
+   "in places," keeping a backup.
+5) Modify exercise 4 so that it doesn't edit the files that already contain
+   the copyright line.

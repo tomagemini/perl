@@ -5,6 +5,8 @@
 # Object: ch8ex6 - write a pattern to match the line end with a whitesapce and
 # add a marker character at the end of output line
 # Version: 1.10 - add a $USAGE
+#               - add an else part for error display
+#               - file name changes from ch8ex6.pl to findLastSpace.pl
 use strict;
 use 5.014;
 

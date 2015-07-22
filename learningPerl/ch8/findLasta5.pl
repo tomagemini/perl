@@ -2,9 +2,11 @@
 # File Name: findLasta5.pl
 # Author: Yi Zhu
 # Date: 2015/07/21
-# Object: write a pattern to match the word end with 'a' by using
+# Object: ch8ex5 - write a pattern to match the word end with 'a' by using
 # label and also capture up to 5 next character
-# Version: 1.10: add a $USAGE
+# Version: 1.10 - add a $USAGE
+#               - add an else part for error display
+#               - file name changes from ch8ex5.pl to findLasta5.pl
 use strict;
 use 5.014;
 my $USAGE = "Usage: $0 inputs.";
