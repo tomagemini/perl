@@ -1,0 +1,103 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 10: More Control Structures
+A) The unless Control Structure
+   Using unless says to run the block of code unless the condition is
+   true. It's just like using an if test with the opposite condition.
+   a) The else Clause with unless
+B) The until Control Structure
+   until is just the reverse of while loop
+C) Expression Modifiers
+   In order to have a more compact notation, an expression may be followed by
+   a modifier that controls it.
+   e.g. print "$n is a negative number.\n" if $n < 0;
+   Perl only allows a single expression on either side of the modifier. You
+   can't put multiple statements on the left of the modifier. With the foreach
+   modifier, there's no way to choose a different control variable - it's
+   always $_.
+D) The Naked Block Control Structure
+   The so-called "naked" block is one without a keyword or condition. One
+   feature of naked block is to provide a scope for temporary lexical
+   variables. 
+   e.g. {
+			print "Please enter a number: ";
+			chomp(my $n = <STDIN>);
+			my $root = sqrt $n; #calculate the square root
+			print "The square root of $n is $root.\n";
+		}
+		In this block, $n and $root are temporary variable scoped to the block.
+E) The elsif Clause
+F) Autoincrement and Autodecrement
+   a) The Value of Autoincrement
+   	  preincrement: increment before assign the value.
+	  e.g. my $m = 5;
+	  	   my $n = ++$m; # increment $m to 6 first, then assign value to $n
+		   	  	   		 # so $m and $n are both 6 now
+	  postincrement: increment after assign the value
+	  e.g. my $d = $m++; # assign $m to $d first, then increment $m
+	  	   	  	   		 # so, $d is still 6 and $m is now 7
+G) The for Control Structure
+   a) The Secret Connection Between foreach and for
+   	  The keyword foreach is exactly equivalent to the keyword for inside the
+	  Perl parser. Any time Perl sees one of them, it's the same as if you had
+	  typed the other. Perl can tell which you meant by looking inside the
+	  parentheses(whether there are semicolons inside).
+H) Loop Controls
+   a) The last Operator
+   	  The last operator immediately ends execution of the loop.
+   b) The next Operator
+   	  It jumps to the inside of the bottom of the current block. After next,
+	  control continues with the next iteration of the loop(much like continue
+	  in C or a similar language).
+   c) The redo Operator
+   	  It goes back to the top of the current loop block, without testing any
+	  conditional expression or advancing to the next iteration.
+   d) Labeled Blocks
+   	  Labels in Perl are like other identifiers - made of letters, digits, and
+	  underscores, but they can't they can't start with a digit. To label a
+	  loop block, just put the label and a colon in front of the loop. Then,
+	  inside the loop, you may use the label after last, next, or redo, as
+	  needed.
+I) The Conditional Operator ?:
+   syntax: expression ? if_true_expr : if_false_expr
+   The conditional operator can be nested. 
+J) Logical Operators
+   AND(&&), OR(||)
+   a) The Value of a Short Circuit Operator
+   	  The logical OR operator is quite handy for selecting a default value.
+	  e.g. my $last_name = defined $lastname{$someone} ? $lastname{$someone} :
+	  '(No last name)';
+   b) The defined-or Operator
+   	  Perl 5.10 has the defined-or operator, //. It can set the undefined
+	  variable with the value after the operator.
+   c) Control Structures Using Partial-Evaluation Operators
+   	  The four operator - &&, ||, //, and ?: - all share a peculiar property:
+	  depending upon the value on the left side, they may or may not evaluate
+	  an expression. For that reason, these are sometimes called
+	  partial-evaluation operators. And partial-evaluation operators are
+	  automatically control structures.
+
+Summary:
+Nothing special to summary. All details are given.
+
+Exercises:
+1) Make a program that will repeatedly ask the user to guess a secret number
+   from 1 to 100 until the user guesses the secret number. Your program should
+   pick the number random by using the magic formula int(1 + rand 100). When
+   the user guesses wrong, the program should respond, "Too high" or "Too
+   low." If the user enters the word quit or exit, or if the user enters a
+   blank line, the program should quit. If the user guesses correctly, the
+   program should quit then as well.
+   File Name: magicNumber.pl
+2) Modify Exercise 1 to print extra debugging information such as the secret
+   number it chose. Make your change such that you can turn it off, but your
+   program emits no warnings if you turn it off.
+   File Name: magicNumberv2.pl
+3) Modify the program from Exercise 3 in Chapter 6(the environment lister) to
+   print (undefined value) for environment variables without a value.
+   File Name: ch10ex3ans.pl
