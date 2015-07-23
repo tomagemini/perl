@@ -158,7 +158,9 @@ Exercises:
    modules that comes with Perl 5.14. To build a hash whose keys are the names
    of the modules that came with a given version of perl, use this line:
    	  my %modules = %{$module::CoreList::version{5.014}};
+   File Name: moduleHash.pl
 2) Write a program using DateTime to compute the interval between now and a
    date that you enter as the year, month, and day on the command line:
    		$ perl duration.pl 1960 9 30
 		50 years, 8 months, and 20 days
+   File Name: duration.pl
