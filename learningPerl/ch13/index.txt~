@@ -1,0 +1,58 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 12: File Tests
+A) File Test Operators
+   Table 12-1. File tests and their meanings
+   see ch12eg1.pl
+   a) Testing Several Attributes of the Same File
+   	  Virtual filehandle _(underscore) uses the information from the last file
+	  lookup that a file test operator performed.
+   b) Stached File Test Operators
+B) The stat and lstat Functions
+   stat returns about all information about a file. The return value is an
+   empty list if stat failed, or a 13-element list:
+   e.g. my($dev, $ino, $mode, $nlink, $uid, $gid, $rdev, $size, $atime,
+   		   $mtime, $ctime, $blksize, $blocks) = stat($filename);
+   $dev and $ino - The device number and inode number of the file. Together
+   they make up a "license plate" for the file. They are always unique.
+   $mode - the set of permission bits for the file, and some other bits.
+   $nlink - The number of (hard)links to the file or directory.
+   $uid and $gid - The user id and group id
+   $size - the size in bytes, as returned by the -s file test
+   $atime, $mtime, $ctime - The file access time, modified time and create
+   time.
+   lstat works for the symbolic link for certain file.
+C) The localtime Function
+   see ch12eg2.pl
+D) Bitwise Operators
+   Table 12-2. Bitwise operators and their meanings
+   Expression  Meaning
+   10 & 12	   Bitwise-and -- this gives 8
+   10 | 12	   Bitwise-or -- this gives 14
+   10 ^ 12	   Bitwise-xor -- this gives 6
+   6 << 2	   Bitwise shift left -- this gives 24
+   25 >> 2	   Bitwise shift right -- this gives 6
+   ~10	 	   Bitwise negation, also called unary bit complement -- return
+   			   the number with the opposite bit for each bit in the operand.
+			   This gives 0xFFFFFFF5
+   a) Using Bitstrings
+
+Summary:
+Nothing special to summary. All details are given.
+
+Exercises:
+1) Make a program that takes a list of files named on the command line and
+   reports for each one whether it's readable, writable, executable, or
+   doesn't exist.
+   File Name: fileTester.pl
+2) Make a program to identify the oldest file named on the command line and
+   report it's age in days.
+   File Name: oldestFile.pl
+3) Make a program that uses stacked file test operators to list all files
+   named on the command line that are readable, writable, and owned by you.
+   File Name: myfileTester.pl

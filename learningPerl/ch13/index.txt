@@ -1,0 +1,51 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 13: Directory Operations
+A) Moving Around the Directory Tree
+   chdir - change directory, default is $_
+B) Globbing
+   Normally, the shell expands any filename patterns on each command line into
+   the matching filenames. This is called globbing. In fact, anything you can
+   say on the command line, you can also put as the (single) argument to glob,
+   including multiple patterns separated by apaces.
+   e.g. my @all_files_including_dot = glob '.* *';
+C) An Alternate Syntax for Globbing
+   It used the angle-bracket syntax, similar to reading from a filehandle:
+   	  my @all_files = <*>; # exactly the same as my @all_files = glob "*";
+   If the item between the angle brackets is strictly a Perl identifier, it's
+   a filehandle read; otherwise, it's a globbing operation.
+   e.g. my @files = <FRED/*>; # a glob
+   		my @lines = <FRED>;   # a filehandle read
+		my @lines = <$fred>;  # a filehandle read
+		my $name = 'FRED';
+		my @files = <$name/*>; # a glob
+   The one exception is if the contents are a simple scalar variable(not an
+   element of a hash or array) that's not a filehandle object, then it's an
+   indirect filehandle read, where the variable contents give the name of the
+   filehandle you want to read:
+   		my $name = 'FRED';
+		my @lines = <$name>;	# an idirect filehandle read of FRED handle
+D) Directory Handles
+   Another way to get a list of names from a given directory is with a
+   directory handle. A directory handle looks and acts like a filehandle. You
+   open it(with opendir), you read from it(with readdir), and you close
+   it(with closedir). And you're reading the names of files in a directory.
+E) Recursive Directory Listing
+F) Manipulating Files and Directories
+G) Removing Files
+H) Renaming Files
+I) Links and Files
+J) Making and Removing Directories
+K) Modifying Permission
+L) Changing Ownership
+M) Changing Timestamps
+
+Summary:
+Nothing special to summary. All details are given.
+
+Exercises:
