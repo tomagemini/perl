@@ -1,0 +1,158 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 13: Directory Operations
+A) Moving Around the Directory Tree
+   chdir - change directory, default is $_
+B) Globbing
+   Normally, the shell expands any filename patterns on each command line into
+   the matching filenames. This is called globbing. In fact, anything you can
+   say on the command line, you can also put as the (single) argument to glob,
+   including multiple patterns separated by apaces.
+   e.g. my @all_files_including_dot = glob '.* *';
+C) An Alternate Syntax for Globbing
+   It used the angle-bracket syntax, similar to reading from a filehandle:
+   	  my @all_files = <*>; # exactly the same as my @all_files = glob "*";
+   If the item between the angle brackets is strictly a Perl identifier, it's
+   a filehandle read; otherwise, it's a globbing operation.
+   e.g. my @files = <FRED/*>; # a glob
+   		my @lines = <FRED>;   # a filehandle read
+		my @lines = <$fred>;  # a filehandle read
+		my $name = 'FRED';
+		my @files = <$name/*>; # a glob
+   The one exception is if the contents are a simple scalar variable(not an
+   element of a hash or array) that's not a filehandle object, then it's an
+   indirect filehandle read, where the variable contents give the name of the
+   filehandle you want to read:
+   		my $name = 'FRED';
+		my @lines = <$name>;	# an idirect filehandle read of FRED handle
+D) Directory Handles
+   Another way to get a list of names from a given directory is with a
+   directory handle. A directory handle looks and acts like a filehandle. You
+   open it(with opendir), you read from it(with readdir), and you close
+   it(with closedir). And you're reading the names of files in a directory.
+   e.g. open dir my $somedir, $dirname or die "Cannot open $dirname: $!";
+   		while(my $name = readdir $somedir)
+		{
+			next if $name =~ /^\./;		# skip over dot files
+			$name = "$dirname/$name";	# patch up the path
+			next unless -f $name and -r $name;	# only readable files
+			...
+		}
+E) Recursive Directory Listing
+   Perl comes with a nice library called File::Find for nifty recursive
+   directory processing. If you are already using Unix find commands to get
+   work done, you can convert them to Perl programs with find2perl program
+   that comes with Perl. You give it the same arguments that you use with find
+   and it spits out the equivalent Perl program:
+   $ find2perl . -name '*.pm'
+   For more complex things, you might want to look at some CPAN modules,
+   including File::Find::Rule and File::Finder. Each of these tries to provide
+   a more convenient interface to File::Find.
+F) Manipulating Files and Directories
+G) Removing Files
+   In Perl, you use the unlink operator with a list of the file that you want
+   to remove:
+   e.g. unlink 'slate', 'bedrock', 'lava';
+   		unlink qw(slate bedrock lava);
+   Since unlink takes a list, and the glob function returns a list, you can
+   combine the two to delete many files at once:
+   e.g. unlink glob '*.o'; # this is similar to rem *.o in shell
+H) Renaming Files
+   syntax: rename 'old', 'new';
+   Some people like to use the fat arrow to remind which way the rename
+   happens:
+   rename 'over_there/some/place/some_file' => 'some_file';
+I) Links and Files
+   Perl uses link function to create a hard link:
+   e.g. link 'chicken', 'egg' or warn "Can't link chicken to egg: $!";
+   Perl uses symlink function to create a symbolic link:
+   e.g. symlink 'dodgson', 'carroll' or warn "Can't symlink dodgson to
+   		carroll: $!";
+J) Making and Removing Directories
+   Perl uses mkdir function to make directory:
+   e.g. mkdir 'fred', 0755 or warn "Cannot make fred dirctory: $!";
+   The second argument 0755 is an octal permission number. If you leave the
+   leading 0, it will be treat as 1363 in octal, which is a strange
+   permission. To avoid this, you better to use the oct() function:
+   e.g. my $name = "fred";
+   		my $permission = "0755"; # danger ... 
+		mkdir $name, $permission; # won't work as you expected
+		mkdir $name, oct($permission); # a better and safer way
+   Perl uses rmdir function to remove empty directory.
+K) Modifying Permission
+   Perl uses chmod to change permission like Unix
+   e.g. chmod 0755, 'fred', 'barney';
+   Symbolic permissions(like +x or go=u-w) accepted by Unix chmod command are
+   not valid for the chmod function in Perl.
+L) Changing Ownership
+   Perl uses chown to change the ownership and group membership:
+   e.g. my $user = 1004;
+   		my $group = 100;
+		chown $user, $group, glob '*.o';
+   If you have a username like merlyn instead of a number, just call getpwnam
+   function to translate the name into a number, and the corresponding
+   getgrnam to translate the group name into its number:
+   e.g. defined(my $user = getpwnam 'merlyn') or die 'bad user';
+   		defined(my $group = getgrnam 'users') or die 'bad group';
+		chown $user, $group, glob '/home/merlyn/*';
+   The defined function verifies that the return value is not undef, which
+   will be returned if the requested user or group is not valid.
+M) Changing Timestamps
+   In those rare cases when you want to lie to other grogramers when a file
+   was most recently modified or accessed, you can use the utime function to
+   fudge the books a bit. The first two arguments give the new access time and
+   modification time, while the remaining arguments are the list of filenames
+   to alter to those timestamps.
+   e.g. my $now = time;
+   		my $ago = $now - 24 * 60 * 60; # seconds per day
+		utime $now, $ago, glob '*'; # set access to now, mod to a day ago
+   The third timestamp (the ctime value) is always set to "now" whenever
+   anything alters a file, so there's no way to set it(it would have to be
+   reset to "now" after you set it) with the utime function. That's because
+   it's primary purpose is for incremental backups: if the fil's ctime is
+   newer than the date on the backup tape, it's time to back it up again.
+
+Summary:
+Nothing special to summary. All details are given.
+
+Exercises:
+1) Write a program to ask the user for a dirctory name, then change to that
+   directory. If the user enters a line with nothing but whitespace, change to
+   his or her home directory as a default. After changing, list the ordinary
+   directory contents(not the items whose names begin with a dot) in
+   alphabetical order.(Hint: will that be easier to do with a directory handle
+   or with a glob?) If the directory change doesn't succeed, just alter the
+   user - but don't try showing the contents.
+   File Name: mychdir.pl
+2) Modify the program to include all files, not just the ones that don't begin
+   with a dot.
+   File Name: dirListGlob.pl
+3) If you used a directory handle for the previous exercise, rewrite it to use
+   a glob. Or vise versa.
+   File Name: dirListHandle.pl
+4) Write a program that works like rm, deleting any files named on the command
+   line. 
+   File Name: myrm.pl
+5) Write a program that works like mv, renaming the first command-line
+   argument to the second command-line argument. Remember to allow for the
+   destination to be a directory; if it is, use the same original basename in
+   the new directory.
+   File Name: mymv.pl
+6) If your operation systems supports it, write a program that works like ln,
+   making a hard link from the first command-line argument to the second. If
+   your system doesn't have hard links, just print out a message telling which
+   operation you would perform if it were available.
+   File Name: myln.pl
+7) If your operating system supports it, fix up the program from the previous
+   exercise to allow an optional -s switch before the other arguments to
+   indicate that you want to make a soft link instead of a hard link.
+   File Name: mysln.pl
+8) If your operating system supports it, write a program to find any symbolic
+   links in the current directory and print out their values(like ls -l would:
+   name -> value).
+   File Name: slinks.pl
