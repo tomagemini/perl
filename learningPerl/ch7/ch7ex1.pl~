@@ -11,7 +11,7 @@ if(@ARGV > 0)
 {
     while(<>)
     {
-		print if(/fred/);
+	print if(/fred/);
     }
 }
 else
