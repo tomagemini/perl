@@ -1,0 +1,107 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 17: Some Advanced Perl Techniques
+A) Slices
+   Perl can index into a list as if it were an array. This is a list
+   slice. Here, since the mtime is item 9 in the list returned by stat, you
+   can get it with a subscript:
+   e.g. my $mtime = (stat $some_file)[9];
+   Those parentheses are required around the list of items. If you wrote it
+   like this, it wouldn't work:
+   e.g. my $mtime = stat($some_file)[9]; #syntax error!
+   The subscripts of a slice may be in any order and many even repeat values:
+   e.g. my @names = qw(zero one two three four five six seven eight nine);
+   		my @numbers = (@names)[9, 0, 2, 1, 0];
+		print "Bedrock @numbers\n"; # op: Bedrock nine zero two one zero
+   a) Array Slice
+   	  That previous example could be made even simpler. When slicing elements
+	  from an array, the parentheses aren't needed:
+	  e.g. my @numbers = @names[9, 0, 2, 1, 0];
+	  Figure 17-1. Array slices versus single elements
+	  one element -> $names[...] <=from an array=> @names[...] <- a list of
+	  elements
+	  e.g. see ch17eg1.pl
+   b) Hash Slice
+   	  In a way exactly analogous to an array slice, you can also slice some
+	  elements from a hash in a hash slice.
+	  e.g. see ch17eg1.pl
+	  A slice is always a list, so the hash slice notation uses an at sign to
+	  indicate that.
+	  Figure 17-2. Hash slices versus single elements
+	  one element -> $score{...} <=from a hash=> @score{...} <- a list of
+	  elements
+	  As you saw with the array slice, the punctuation mark at the front of
+	  the variable reference(either $ or @) determines the context of the
+	  subscript experssion. If there's a dollar sign, the subscript expression
+	  is evaluated in a scalar context to get a single key. But if there's an
+	  at sign, the subscript expression is evaluated in a list context to get
+	  a list of keys.
+B) Trapping Errors
+   Sometimes things don't always work out in your program, but that doesn't
+   mean you want your programs to merely complain before they stop themselves
+   dead. Dealing with errors is a major part of the work of programming.
+   a) Using eval
+   	  Perl provides a simple way to catch fatal errors - you can wrap the code
+	  in an eval block:
+	  e.g. eval{ $barney = $fred / $dino };
+	  When an eval finishes, you want to know whether it exited normally or
+	  caught a fatal error. If eval caught a fatal error, it returns undef and
+	  puts the error message in the $@special variable. If there was no error,
+	  $@ will be empty. That means $@ is a useful Boolean value, true if there
+	  was an error.
+	  e.g. see ch17eg2.pl
+   b) More Advanced Error Handling
+   	  With just basic Perl, you throw an exception with die and catch it with
+	  eval. You can inspect $@ to figure out what happened.
+	  The Try::Tiny module make it like a try-catch-finally block.
+	  e.g. see ch17eg3.pl
+   c) autodie
+   	  e.g. see ch17eg4.pl
+C) Picking Items from a List with grep
+   e.g. see ch17eg4.pl
+D) Transforming Items from a List with map
+   The map operator looks much like grep because it has the same kind of
+   arguments: a block that uses $_, and a list of items to process. And it
+   operates in a similar way, evaluating the block once for each item in the
+   list, with $_ aliased to a different original list element each time. But
+   map uses the last expression of the block differently; instead of giving a
+   Boolean value, the final value actually becomes part of the resulting
+   list. One other important different is that the expression used by map is
+   evaluated in a list context and may return any number of items, not
+   necessarily one each time.
+   e.g. see ch17eg5.pl
+F) Fancier List Utilites
+   The List::Util module comes with the Standard Library and provides
+   high-performance versions of common list processing utilites. These are
+   implemented at the C level
+   There are many more useful and interesting subroutines in List::MoreUtils.
+   e.g. see ch17eg6.pl
+
+Summary:
+Nothing special to summary. All details are given.
+
+Exercises:
+1) Make a program that reads a list of strings from a file, one string per
+   line, and then lets the user interactively enter patterns that may match
+   some of the strings. For each pattern, the program should tell how many
+   strings from the file matched, then which ones those were. Don't read the
+   file for each new pattern; keep the strings in memory. The filename may be
+   hardcoded in the file. If a pattern is invalid(for example, if it has
+   unmathced parentheses), the program should simply report that error and let
+   the user continue trying patterns. When the user enters a blank line
+   instead of a pattern, the program should quit.
+   File Name: patFinder.pl
+2) Write a program to make a report of the access and modification times(in
+   epoch time) of the files in the current dirctory. Use stat to get the
+   times, using a list slice to extract the elements. Report your results in
+   three columns.
+   File Name: reportTimes.pl
+3) Modify your answer to Exercise 2 to report the times using the YYYY-MM-DD
+   format. Use a map with localtime and a slice to turn the epoch times into
+   the date strings that you need.
+   File Name: reportTimes2.pl
