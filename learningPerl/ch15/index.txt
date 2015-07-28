@@ -1,0 +1,78 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 15: Smart Matching and given-when
+Use at least Perl 5.10.1
+use 5.010001;
+A) The Smart Match Operator
+   The smart match Operator, ~~, looks at both of its operands and decides on
+   its own how it should compare them. The ~~ looks almost like the binding
+   operator, =~, but ~~ can do much more. It can even stand in for the binding
+   operator. 
+   e.g. see ch15eg1.pl
+B) Smart Match Precedence
+   Table 15-1. Smart match operations for pairs of operands
+   see ch15eg2.pl
+C) The given Statment
+   The given-when control structure allows you to run a block of code when the
+   argument to given satisfies a condition. It's Perl's equivalent to C's
+   switch statement.
+   The given aliases it's argument to $_, and each of the when conditions
+   tries an implicit smart match against $_. If $_ does not satisfy any of the
+   when conditions, Perl executes the default block. There is an implicit
+   break at the end of each when block, and that tells Perl to stop the
+   given-when construct and move on with the rest of program.
+   e.g. see ch15eg3.pl
+   If you use continue at the end of a when instead, Perl tries the succeeding
+   when statements to, repeating the process it started before. That's
+   something that if-elsif-else can't do. 
+   a) Dumb Matching
+   	  Although the given-when can use smart matching, you can use the "dumb"
+	  comparison as well. You can even mix and match dumb and smart matching.
+	  e.g. see ch15eg4.pl
+D) Using when with Many Items
+   To go through many elements, you don't need the given. Let foreach put the
+   current element in $_ on its own. If you want to use smart matching, the
+   current element has to be in $_. You can even put extra statements between
+   the whens, such as putting a debugging statement right before the default.
+   e.g. see ch15eg5.pl
+
+Summary:
+Nothing special to summary. All details are given.
+
+Exercises:
+1) Rewrite your number guessing program from Exercise 1 in Chapter 10 to use
+   given. You don't need to use smart matching.
+2) Write a program using given-when that takes a number as its input, then
+   prints 'Fizz' if it is divisible by 3, 'Bin' if it is divisible by 5, and
+   'Sausage' if it is divisible by 7. For a number like 15, it should print
+   'Fizz' and 'Bin'.
+3) Using for-when, write a program that goes through a list of files on the
+   command line and reports if each file is readable, writable, or
+   executable. You don't need to use smart matching.
+4) Using given and smart matching, write a program that reports all the
+   divisors(except 1 and the number itself) of a number you specify on the
+   command line. For instance, for the number 99, your program should report
+   it is divisible by 3, 9, 11 and 33. If the number is prime, report that the
+   number is prime instead. If the command line argument is not a number,
+   report the error and don't try to compute the divisors. Althogh you could
+   do this with if constructs and with dumb matching, only use smart matching.
+   To get you started, here's a subroutine to return a list of divisors. It
+   tries all of the numbers up to one half of $number:
+   		 sub divisors
+		 {
+			my $number = shift;
+			my @divisors = ();
+			foreach my $divisor(2 .. ($number/2))
+			{
+				push @divisors, $divisor unless $number % $divisor;
+			}
+			return @divisors;
+		}
+5) Modify the program from the previous exercise to also report if the number
+   is odd or even, if the number is prime, and if it is divisible by your
+   favorite number. Again, only use smart matching.

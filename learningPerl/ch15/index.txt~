@@ -1,0 +1,125 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 14: Strings and Sorting
+A) Finding a Substring with index
+   syntax: $where = index($big, $small);
+   Perl locates the first occurrence of the small string within the big
+   string, returning an integer location of the first character. The character
+   position returned is a zero-based value.
+   You can tell it to start searching at a later point than the start of the
+   string by using the optional third parameter, which tells index to start at
+   that position:
+   e.g. see ch14eg1.pl
+   The rindex function starts scanning from the end of the string.
+   e.g. see ch14eg1.pl
+B) Manipulating a Substring with substr
+   The substr function works with only a part of a larger string:
+   syntax: $part = substr($string, $initial_position, $length);
+   It takes three arguments: a string value, a zero-based initial position
+   (such as the return value of index), and a length for the substring. The
+   return value is the substring.
+   e.g. see ch14eg2.pl
+   The initial position of the substring in the larger string can be negative,
+   counting from the end of the string(that is, position -1 is the last
+   character). 
+   e.g. see ch14eg2.pl
+C) Formatting Data with sprintf
+   The sprintf function takes the same arguments as printf(except for the
+   optional filehandle), but it returns the requested string instead of
+   printing it.
+   a) Using sprintf with "Money Numbers"
+   	  e.g. see ch14eg3.pl
+   b) Interpreting Non-Decimal Numberals
+   	  If you have a string that represents a number as another base, you can
+	  use the hex() or oct() functions to interpret thoes numbers
+	  correctly. Curiously, the oct() function is smart enought to recognize
+	  the correct base if you use prefix characters to specify hex or binary,
+	  but the only prefix for hex is 0x:
+	  e.g. hex('DEADBEEF') # 3,735,928,559 decimal
+	  	   hex('0xDEADBEEF') # same as above
+		   oct('0377') # 255 decimal
+		   oct('337') # 255 decimal
+		   oct('0xDEADBEEF') # same as the hex example
+		   oct('0b1101') # 13 decimal
+		   oct("ob$bits") # convert $bits from binary
+D) Advanced Sorting
+   Perl has a convenient shortcut for three-way comparison. You can use the
+   spaceship operator(<=>). This operator compares two numbers and returns -1,
+   0, or 1 as needed to sort them numerically. So you can write the sort
+   subroutie like this:
+   sub by_numbers { $a <=> $b }
+   Then, the corresponding three-way comparison operator for string is: cmp.
+   e.g. sub by_code_point { $a cmp $b }
+   		my @strings = sort by_code_point @any_strings;
+   Remeber that Unicode has the concept of canonical and compatiable
+   equivalence, which we cover in Appendix C. To sort equivalence forms next
+   to each other, you need to sort decompsied form. If you are dealing with
+   Unicode strings, this is probably what you want most of the time:
+   		use Unicode::Normalize;
+   		sub equivalents { NFKD($a) cmp NFKD($b) }
+   You can make the code even simpler by making the entire sort routine
+   "inline" like:
+   		my @number = sort { $a <=> $b } @some_numbers;
+   Suppose you want to sort in decending order, you can do this:
+   		my @descending = reverse sort { $a <=> $b } @some_numbers;
+   or, even simpler:
+   	    my @descending = sort { $b <=> $a } @some_numbers;
+   This is because the comparison operators(<=> and cmp) are very nearsighted;
+   that is, they can't see which operand is $a and which is $b, but only which
+   value is on the left and which is on the right. So if $a and $b were to
+   swap places, the comparison operator would get the results backward every
+   time. 
+   e.g. see ch14eg4.pl
+   a) Sorting a Hash by Value
+   	  You need to write a sort subroutie for this task:
+   	  e.g. see ch14e4.pl
+   b) Sorting by Multiple Keys
+   	  You need to use the logical operator or for different sort keys:
+	  e.g. see ch14eg4.pl
+	  e.g. Here the Bedrock Library program put a list of patron ID numbers in
+	  order according to a five-level sort. This example sorts according to
+	  the amount of each patron's outstanding fines(as calculated by a
+	  subroutine &fines, not show here), the number of items they currently
+	  have checked out(from %items), their name(in order by family name, then
+	  by personal name, both from hashes), and finally by the patron's ID
+	  number, in case everything else is the same:
+	       @patron_IDs = sort
+		   			   	 {
+							&fines($b) <=> &fines($a) or
+							$items($b) <=> $items($a) or
+							$family_name{$a} cmp $family_name{$b} or
+							$personal_name{$a} cmp $personal_name{$b} or
+							$a <=> $b
+						 } @patron_IDs;
+
+Summary:
+Nothing special to summary. All details are given.
+
+Exercises:
+1) Write a program to read in a list of numbers and sort them numerically,
+   printing out the resulting list in a right-justified column. Try it out on
+   this sample data:
+   		17 1000 04 1.50 3.14159 -10 1.5 4 2001 90210 666
+   File Name: numSort.pl
+2) Make a program that will print the following hash's data sorted in
+   case-insensitive alphabetical order by last name. When the last name are
+   the same, sort those by first name. That is, the first name in the outputs
+   should be Fred's, while the last one should be Betty's. All of the people
+   with the same family name should be grouped together. Don't alter data. The
+   names should be printed with the same capitalization as shown here:
+   		my %last name = qw{
+		   fred flintstone Wilma Flintstone Barney Rubble
+		   betty rubble Bamm-Bamm Rubble PEBBLES FLINTSTONE
+		};
+   File Name: nameSort.pl
+3) Make a program that looks through a given string for every occurrence of a
+   given substring, printing out the positions where the substring is
+   found. For example, given the input string "This is a test." and substring
+   "is", it should report position 2 and 5. If the substring is "a", it should
+   report 8.
+   File Name: substrPos.pl
