@@ -1,0 +1,23 @@
+Book Name: Learning Perl
+Author: Randal L. Schwartz, Brain D Foy, Tom Phoenix
+Edition: 6th Ed
+Publisher: O'Reilly
+Year: 2011
+ISBN: 9781449303587
+
+Chapter 16: Process Management
+A) The system Function
+   a) Avoiding the Shell
+B) The Environment Variables
+C) The exec Function
+D) Using Backquotes to Capture Output
+   a) Using Backquotes in a List Context
+E) External Processes with IPC::System::Simple
+F) Processes as Filehandles
+G) Getting Down and Dirty with Fork
+H) Sending and Receving Signals
+
+Summary:
+Nothing special to summary. All details are given.
+
+Exercises:
